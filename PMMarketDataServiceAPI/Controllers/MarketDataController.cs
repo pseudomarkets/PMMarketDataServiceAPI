@@ -102,7 +102,7 @@ namespace PMMarketDataServiceAPI.Controllers
 
                 double aggregatePrice = 0;
 
-                if (iexPrice.askPrice > 0 && iexPrice.bidPrice > 0)
+                if (iexPrice?.askPrice > 0 && iexPrice?.bidPrice > 0)
                 {
                     aggregatePrice = (twelveDataPrice.Price + ((iexPrice.askPrice + iexPrice.bidPrice) / 2) +
                                       Convert.ToDouble(alphaVantagePrice.GlobalQuote.price)) / 3;
