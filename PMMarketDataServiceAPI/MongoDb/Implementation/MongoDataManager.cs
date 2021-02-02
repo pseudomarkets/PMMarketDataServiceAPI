@@ -56,17 +56,9 @@ namespace PMMarketDataServiceAPI.MongoDb.Implementation
         {
             try
             {
-                var replaceOptions = new ReplaceOptions()
-                {
-                    IsUpsert = true
-                };
-
-                var symbolAndDateFilter = Builders<BsonDocument>.Filter.Eq("Symbol", historicalStockData.Symbol) &
-                                          Builders<BsonDocument>.Filter.Eq("Date", historicalStockData.Date);
-
                 var historicalDataAsBson = historicalStockData.ToBsonDocument();
 
-                _mongoCollection.ReplaceOne(symbolAndDateFilter, historicalDataAsBson, replaceOptions);
+                _mongoCollection.InsertOne(historicalDataAsBson);
             }
             catch (Exception e)
             {
