@@ -128,7 +128,28 @@ namespace PMMarketDataServiceAPI.Controllers
         [Route("DetailedQuote/{symbol}/{interval}")]
         public async Task<DetailedQuoteOutput> GetDetailedQuote(string symbol, string interval = "1min")
         {
-            var detailedQuote = await _marketDataProvider.GetTwelveDataDetailedQuote(symbol, interval);
+
+            symbol = symbol.ToUpper();
+
+            DetailedQuoteOutput detailedQuote;
+
+            var cachedQuote = _aerospikeConnectionManager.GetCachedDetailedQuote(symbol);
+
+            if (!string.IsNullOrEmpty(cachedQuote?.symbol))
+            {
+                detailedQuote = cachedQuote;
+                detailedQuote.source = "Pseudo Markets Cached Detailed Quote";
+            }
+            else
+            {
+                detailedQuote = await _marketDataProvider.GetTwelveDataDetailedQuote(symbol, interval);
+
+                if (detailedQuote != null && !string.IsNullOrEmpty(detailedQuote?.symbol))
+                {
+                    _aerospikeConnectionManager.SetCachedDetailedQuote(detailedQuote);
+                    detailedQuote.source = "Twelve Data Time Series";
+                }
+            }
 
             return detailedQuote;
         }

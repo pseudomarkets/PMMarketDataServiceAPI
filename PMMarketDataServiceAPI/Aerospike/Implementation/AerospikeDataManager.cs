@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Aerospike.Client;
+using MessagePack;
+using PMCommonApiModels.ResponseModels;
 using PMCommonEntities.Models.PseudoXchange;
 using PMMarketDataServiceAPI.Aerospike.Interfaces;
 using Log = Serilog.Log;
@@ -110,6 +112,51 @@ namespace PMMarketDataServiceAPI.Aerospike.Implementation
             catch (Exception e)
             {
                 Log.Error(e, $"{nameof(SetCachedIndices)}");
+            }
+        }
+
+        public DetailedQuoteOutput GetCachedDetailedQuote(string symbol)
+        {
+            DetailedQuoteOutput detailedQuote = new DetailedQuoteOutput();
+
+            try
+            {
+                Key recordKey = new Key(XchangeInMemNamespace.Namespace, XchangeInMemNamespace.SetDetailedQuoteCache.Set, symbol);
+                var record = _aerospikeClient.Get(new Policy(), recordKey);
+
+                if (record != null)
+                {
+                    record.bins.TryGetValue(XchangeInMemNamespace.SetDetailedQuoteCache.CachedQuoteBin,
+                        out var serializedDetailedQuote);
+
+                    var buffer = (byte[]) serializedDetailedQuote;
+
+                    detailedQuote = MessagePackUtil.DeserializeDetailedQuote(buffer);
+
+                    return detailedQuote;
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, $"{nameof(GetCachedDetailedQuote)}");
+            }
+
+            return detailedQuote;
+        }
+
+        public void SetCachedDetailedQuote(DetailedQuoteOutput detailedQuote)
+        {
+            try
+            {
+                Key recordKey = new Key(XchangeInMemNamespace.Namespace, XchangeInMemNamespace.SetDetailedQuoteCache.Set, detailedQuote.symbol);
+                var serializedQuote = MessagePackUtil.SerializeDetailedQuote(detailedQuote);
+                Bin detailedQuoteBin = new Bin(XchangeInMemNamespace.SetDetailedQuoteCache.CachedQuoteBin, serializedQuote);
+
+                _aerospikeClient.Put(_writePolicy, recordKey, detailedQuoteBin);
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, $"{nameof(SetCachedDetailedQuote)}");
             }
         }
     }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -40,18 +41,21 @@ namespace PMMarketDataServiceAPI.Controllers
         {
             try
             {
-                var positions = _pseudoMarketsDb.Positions.Distinct().ToList();
-                foreach (Positions p in positions)
+                var positions = _pseudoMarketsDb.Positions.Select(x => x.Symbol).Distinct().ToList();
+                foreach (string symbol in positions)
                 {
-                    var priceData = await _marketDataProvider.GetTwelveDataRealTimePrice(p.Symbol);
+                    var priceData = await _marketDataProvider.GetTwelveDataRealTimePrice(symbol);
                     HistoricalStockData historicalData = new HistoricalStockData()
                     {
                         ClosingPrice = Convert.ToDouble(priceData?.Price),
-                        Symbol = p.Symbol.ToUpper(),
+                        Symbol = symbol.ToUpper(),
                         Date = DateTime.Today
                     };
 
                     _mongoConnection.SaveHistoricalStockData(historicalData);
+
+                    // Add a delay to stay within Twelve Data API limit
+                    Thread.Sleep(5000);
                 }
 
                 return Ok("LOAD OK");
