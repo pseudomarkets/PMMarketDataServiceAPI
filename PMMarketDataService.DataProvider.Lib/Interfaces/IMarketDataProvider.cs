@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using PMCommonApiModels.ResponseModels;
-using TwelveDataSharp.DataModels;
+using TwelveDataSharp.Library.ResponseModels;
 
 namespace PMMarketDataService.DataProvider.Lib.Interfaces
 {

@@ -7,8 +7,8 @@ using Newtonsoft.Json;
 using PMCommonApiModels.ResponseModels;
 using PMMarketDataService.DataProvider.Lib.Interfaces;
 using TwelveDataSharp;
-using TwelveDataSharp.DataModels;
 using TwelveDataSharp.Interfaces;
+using TwelveDataSharp.Library.ResponseModels;
 
 namespace PMMarketDataService.DataProvider.Lib.Implementation
 {

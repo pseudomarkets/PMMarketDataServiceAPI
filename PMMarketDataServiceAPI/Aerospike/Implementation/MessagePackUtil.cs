@@ -10,7 +10,7 @@ namespace PMMarketDataServiceAPI.Aerospike.Implementation
 {
     public static class MessagePackUtil
     {
-        public static byte[] SerializeDetailedQuote(DetailedQuoteOutput detailedQuote)
+        public static byte[] SerializeDetailedQuote(this DetailedQuoteOutput detailedQuote)
         {
             CachedDetailedQuote cachedDetailedQuote = new CachedDetailedQuote()
             {

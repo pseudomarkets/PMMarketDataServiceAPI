@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <PackageId>PMMarketDataService.DataProvider.Client</PackageId>
-    <Version>1.0.1</Version>
+    <Version>1.0.3</Version>
     <Authors>Shravan Jambukesan</Authors>
     <Company>Pseudo Markets</Company>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
@@ -11,12 +11,13 @@
     <Copyright>(c) 2020 - 2021 Pseudo Markets</Copyright>
     <PackageProjectUrl>https://github.com/pseudomarkets/PMMarketDataServiceAPI</PackageProjectUrl>
     <PackageLicenseExpression></PackageLicenseExpression>
-    <PackageReleaseNotes>* Initial Release</PackageReleaseNotes>
+    <PackageReleaseNotes>* Updated to support latest TwelveDataSharp and CommonEntities release</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="PMCommonApiModels" Version="1.0.4" />
-    <PackageReference Include="PMCommonEntities" Version="1.1.7" />
+    <PackageReference Include="PMCommonEntities" Version="1.1.8" />
+    <PackageReference Include="TwelveDataSharp" Version="1.1.0" />
   </ItemGroup>
 
 </Project>

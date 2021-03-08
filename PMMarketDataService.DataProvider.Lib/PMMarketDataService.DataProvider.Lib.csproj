@@ -16,7 +16,7 @@
 
   <ItemGroup>
     <PackageReference Include="PMCommonApiModels" Version="1.0.4" />
-    <PackageReference Include="TwelveDataSharp" Version="1.0.0.3" />
+    <PackageReference Include="TwelveDataSharp" Version="1.1.0" />
   </ItemGroup>
 
 </Project>

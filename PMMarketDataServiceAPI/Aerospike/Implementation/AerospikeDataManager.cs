@@ -129,9 +129,7 @@ namespace PMMarketDataServiceAPI.Aerospike.Implementation
                     record.bins.TryGetValue(XchangeInMemNamespace.SetDetailedQuoteCache.CachedQuoteBin,
                         out var serializedDetailedQuote);
 
-                    var buffer = (byte[]) serializedDetailedQuote;
-
-                    detailedQuote = MessagePackUtil.DeserializeDetailedQuote(buffer);
+                    detailedQuote = MessagePackUtil.DeserializeDetailedQuote(serializedDetailedQuote as byte[]);
 
                     return detailedQuote;
                 }
@@ -149,7 +147,7 @@ namespace PMMarketDataServiceAPI.Aerospike.Implementation
             try
             {
                 Key recordKey = new Key(XchangeInMemNamespace.Namespace, XchangeInMemNamespace.SetDetailedQuoteCache.Set, detailedQuote.symbol);
-                var serializedQuote = MessagePackUtil.SerializeDetailedQuote(detailedQuote);
+                var serializedQuote = detailedQuote.SerializeDetailedQuote();
                 Bin detailedQuoteBin = new Bin(XchangeInMemNamespace.SetDetailedQuoteCache.CachedQuoteBin, serializedQuote);
 
                 _aerospikeClient.Put(_writePolicy, recordKey, detailedQuoteBin);
