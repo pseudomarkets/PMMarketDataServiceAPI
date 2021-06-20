@@ -174,13 +174,16 @@ namespace PMMarketDataService.DataProvider.CacheService.Implementations
                 XchangeInMemNamespace.SetCacheControl.RecordKey);
 
             var record = _aerospikeClient.Operate(_cacheControlPolicy, key,
-                ListOperation.Get(XchangeInMemNamespace.SetCacheControl.PassThruSymbolListBin, 0));
+                ListOperation.GetRange(XchangeInMemNamespace.SetCacheControl.PassThruSymbolListBin, 0));
 
             if (record?.bins != null)
             {
                 var list = record.GetList(XchangeInMemNamespace.SetCacheControl.PassThruSymbolListBin);
 
-                symbols = (List<string>) list;
+                foreach (var listObject in list)
+                {
+                    symbols.Add(Convert.ToString(listObject));
+                }
             }
 
             return symbols;
@@ -201,7 +204,7 @@ namespace PMMarketDataService.DataProvider.CacheService.Implementations
                 XchangeInMemNamespace.SetCacheControl.RecordKey);
 
             _aerospikeClient.Operate(_cacheControlPolicy, key,
-                ListOperation.Clear(XchangeInMemNamespace.SetCacheControl.PassThruSymbolListBin));
+                ListOperation.Clear(XchangeInMemNamespace.SetCacheControl.PassThruSymbolListBin), ListOperation.Create(XchangeInMemNamespace.SetCacheControl.PassThruSymbolListBin, ListOrder.UNORDERED, false));
         }
 
         public void SetGlobalCacheDisableStatus(bool status)
