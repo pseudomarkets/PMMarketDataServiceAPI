@@ -14,11 +14,11 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using MongoDB.Driver;
+using PMMarketDataService.DataProvider.CacheService.Implementations;
+using PMMarketDataService.DataProvider.HistoricalDataService.Implementations;
 using PMMarketDataService.DataProvider.Lib.Implementation;
 using PMMarketDataService.DataProvider.Lib.Interfaces;
-using PMMarketDataServiceAPI.Aerospike.Implementation;
 using PMMarketDataServiceAPI.Models;
-using PMMarketDataServiceAPI.MongoDb.Implementation;
 
 namespace PMMarketDataServiceAPI
 {

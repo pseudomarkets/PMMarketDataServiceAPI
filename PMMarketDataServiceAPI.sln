@@ -9,7 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PMMarketDataService.DataPro
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PMMarketDataService.DataProvider.Client", "PMMarketDataService.DataProvider.Client\PMMarketDataService.DataProvider.Client.csproj", "{43D7A8DF-5865-4B7A-BF26-6D558BB1CD28}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PMMarketDataService.DataProvider.UnitTests", "PMMarketDataService.DataProvider.UnitTests\PMMarketDataService.DataProvider.UnitTests.csproj", "{78480328-843A-465E-B242-5596C6411EE6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PMMarketDataService.DataProvider.UnitTests", "PMMarketDataService.DataProvider.UnitTests\PMMarketDataService.DataProvider.UnitTests.csproj", "{78480328-843A-465E-B242-5596C6411EE6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PMMarketDataService.DataProvider.CacheService", "PMMarketDataService.DataProvider.CacheService\PMMarketDataService.DataProvider.CacheService.csproj", "{4F3ED7A5-BD3A-4223-9CBD-A139783AD0EE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PMMarketDataService.DataProvider.HistoricalDataService", "PMMarketDataService.DataProvider.HistoricalDataService\PMMarketDataService.DataProvider.HistoricalDataService.csproj", "{F3EB6022-2B51-4C86-BB98-59857FEB30E7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +37,14 @@ Global
 		{78480328-843A-465E-B242-5596C6411EE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{78480328-843A-465E-B242-5596C6411EE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{78480328-843A-465E-B242-5596C6411EE6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F3ED7A5-BD3A-4223-9CBD-A139783AD0EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F3ED7A5-BD3A-4223-9CBD-A139783AD0EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F3ED7A5-BD3A-4223-9CBD-A139783AD0EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F3ED7A5-BD3A-4223-9CBD-A139783AD0EE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F3EB6022-2B51-4C86-BB98-59857FEB30E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F3EB6022-2B51-4C86-BB98-59857FEB30E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F3EB6022-2B51-4C86-BB98-59857FEB30E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F3EB6022-2B51-4C86-BB98-59857FEB30E7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

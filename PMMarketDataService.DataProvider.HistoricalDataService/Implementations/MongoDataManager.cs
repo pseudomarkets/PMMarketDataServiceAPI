@@ -1,16 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Threading.Tasks;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
 using PMCommonEntities.Models.HistoricalData;
-using PMMarketDataServiceAPI.MongoDb.Interfaces;
+using PMMarketDataService.DataProvider.HistoricalDataService.Interfaces;
 using Serilog;
 
-namespace PMMarketDataServiceAPI.MongoDb.Implementation
+namespace PMMarketDataService.DataProvider.HistoricalDataService.Implementations
 {
     public class MongoDataManager : IMongoDataManager
     {

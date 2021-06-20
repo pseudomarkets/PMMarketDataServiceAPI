@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using PMCommonEntities.Models.HistoricalData;
+﻿using PMCommonEntities.Models.HistoricalData;
 
-namespace PMMarketDataServiceAPI.MongoDb.Interfaces
+namespace PMMarketDataService.DataProvider.HistoricalDataService.Interfaces
 {
     public interface IMongoDataManager
     {

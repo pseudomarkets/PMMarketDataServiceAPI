@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Aerospike.Client;
+﻿using System.Collections.Generic;
 using PMCommonApiModels.ResponseModels;
 
-namespace PMMarketDataServiceAPI.Aerospike.Interfaces
+namespace PMMarketDataService.DataProvider.CacheService.Interfaces
 {
     public interface IAerospikeDataManager
     {

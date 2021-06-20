@@ -1,27 +1,35 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Aerospike.Client;
-using MessagePack;
 using PMCommonApiModels.ResponseModels;
 using PMCommonEntities.Models.PseudoXchange;
-using PMMarketDataServiceAPI.Aerospike.Interfaces;
+using PMMarketDataService.DataProvider.CacheService.Interfaces;
 using Log = Serilog.Log;
 
-namespace PMMarketDataServiceAPI.Aerospike.Implementation
+namespace PMMarketDataService.DataProvider.CacheService.Implementations
 {
-    public class AerospikeDataManager : IAerospikeDataManager
+    public class AerospikeDataManager : IAerospikeDataManager, ICacheControlService
     {
         private readonly AerospikeClient _aerospikeClient;
         private readonly WritePolicy _writePolicy;
+        private readonly WritePolicy _cacheControlPolicy;
+        private readonly Policy _readPolicy;
 
         public AerospikeDataManager(string hostname, int port, int cacheTtl)
         {
             _aerospikeClient = new AerospikeClient(hostname, port);
+
+            _readPolicy = new Policy();
+
             _writePolicy = new WritePolicy()
             {
                 expiration = cacheTtl
+            };
+
+            _cacheControlPolicy = new WritePolicy()
+            {
+                expiration = -1
             };
         }
 
@@ -32,7 +40,7 @@ namespace PMMarketDataServiceAPI.Aerospike.Implementation
             try
             {
                 Key recordKey = new Key(XchangeInMemNamespace.Namespace, setName, symbol);
-                var record = _aerospikeClient.Get(new Policy(), recordKey);
+                var record = _aerospikeClient.Get(_readPolicy, recordKey);
 
                 if (record != null)
                 {
@@ -72,7 +80,7 @@ namespace PMMarketDataServiceAPI.Aerospike.Implementation
             try
             {
                 Key recordKey = new Key(XchangeInMemNamespace.Namespace, XchangeInMemNamespace.SetIndicesCache.Set, "idxCache");
-                var record = _aerospikeClient.Get(new Policy(), recordKey);
+                var record = _aerospikeClient.Get(_readPolicy, recordKey);
 
                 if (record != null)
                 {
@@ -122,7 +130,7 @@ namespace PMMarketDataServiceAPI.Aerospike.Implementation
             try
             {
                 Key recordKey = new Key(XchangeInMemNamespace.Namespace, XchangeInMemNamespace.SetDetailedQuoteCache.Set, symbol);
-                var record = _aerospikeClient.Get(new Policy(), recordKey);
+                var record = _aerospikeClient.Get(_readPolicy, recordKey);
 
                 if (record != null)
                 {
@@ -156,6 +164,72 @@ namespace PMMarketDataServiceAPI.Aerospike.Implementation
             {
                 Log.Error(e, $"{nameof(SetCachedDetailedQuote)}");
             }
+        }
+
+        public IEnumerable<string> GetCacheDisabledSymbolsList()
+        {
+            List<string> symbols = new List<string>();
+
+            var key = new Key(XchangeInMemNamespace.Namespace, XchangeInMemNamespace.SetCacheControl.Set,
+                XchangeInMemNamespace.SetCacheControl.RecordKey);
+
+            var record = _aerospikeClient.Operate(_cacheControlPolicy, key,
+                ListOperation.Get(XchangeInMemNamespace.SetCacheControl.PassThruSymbolListBin, 0));
+
+            if (record?.bins != null)
+            {
+                var list = record.GetList(XchangeInMemNamespace.SetCacheControl.PassThruSymbolListBin);
+
+                symbols = (List<string>) list;
+            }
+
+            return symbols;
+        }
+
+        public void AppendToCacheDisabledSymbolsList(IEnumerable<string> symbols)
+        {
+            var key = new Key(XchangeInMemNamespace.Namespace, XchangeInMemNamespace.SetCacheControl.Set,
+                XchangeInMemNamespace.SetCacheControl.RecordKey);
+
+            _aerospikeClient.Operate(_cacheControlPolicy, key,
+                ListOperation.AppendItems(XchangeInMemNamespace.SetCacheControl.PassThruSymbolListBin, symbols.ToList()));
+        }
+
+        public void ClearCacheDisabledSymbolsList()
+        {
+            var key = new Key(XchangeInMemNamespace.Namespace, XchangeInMemNamespace.SetCacheControl.Set,
+                XchangeInMemNamespace.SetCacheControl.RecordKey);
+
+            _aerospikeClient.Operate(_cacheControlPolicy, key,
+                ListOperation.Clear(XchangeInMemNamespace.SetCacheControl.PassThruSymbolListBin));
+        }
+
+        public void SetGlobalCacheDisableStatus(bool status)
+        {
+            var key = new Key(XchangeInMemNamespace.Namespace, XchangeInMemNamespace.SetCacheControl.Set,
+                XchangeInMemNamespace.SetCacheControl.RecordKey);
+
+            var globalCacheDisableStatusBin =
+                new Bin(XchangeInMemNamespace.SetCacheControl.GlobalCacheDisableBin, status);
+
+            _aerospikeClient.Put(_cacheControlPolicy, key, globalCacheDisableStatusBin);
+        }
+
+        public bool GetGlobalCacheDisableStatus()
+        {
+            bool status = false;
+
+            var key = new Key(XchangeInMemNamespace.Namespace, XchangeInMemNamespace.SetCacheControl.Set,
+                XchangeInMemNamespace.SetCacheControl.RecordKey);
+
+            var record = _aerospikeClient.Get(_readPolicy, key);
+
+            if (record?.bins != null)
+            {
+                status = record.GetBool(XchangeInMemNamespace.SetCacheControl.GlobalCacheDisableBin);
+            }
+
+            return status;
         }
     }
 }

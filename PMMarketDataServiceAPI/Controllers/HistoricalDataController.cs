@@ -10,9 +10,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PMCommonEntities.Models.HistoricalData;
 using PMCommonEntities.Models.PseudoXchange;
+using PMMarketDataService.DataProvider.HistoricalDataService.Implementations;
 using PMMarketDataService.DataProvider.Lib.Implementation;
 using PMMarketDataServiceAPI.Models;
-using PMMarketDataServiceAPI.MongoDb.Implementation;
 using PMUnifiedAPI.Models;
 using Serilog;
 

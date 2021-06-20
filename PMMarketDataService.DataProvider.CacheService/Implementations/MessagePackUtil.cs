@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using MessagePack;
+﻿using MessagePack;
 using PMCommonApiModels.ResponseModels;
 using PMCommonEntities.Models.CachedData;
 
-namespace PMMarketDataServiceAPI.Aerospike.Implementation
+namespace PMMarketDataService.DataProvider.CacheService.Implementations
 {
     public static class MessagePackUtil
     {
