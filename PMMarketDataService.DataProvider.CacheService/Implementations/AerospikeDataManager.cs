@@ -231,5 +231,10 @@ namespace PMMarketDataService.DataProvider.CacheService.Implementations
 
             return status;
         }
+
+        public bool IsConnected()
+        {
+            return _aerospikeClient.Connected;
+        }
     }
 }

@@ -6,5 +6,7 @@ namespace PMMarketDataService.DataProvider.HistoricalDataService.Interfaces
     {
         public HistoricalStockData GetHistoricalStockData(string symbol, string date);
         public void SaveHistoricalStockData(HistoricalStockData historicalStockData);
+
+        public bool IsConnected();
     }
 }

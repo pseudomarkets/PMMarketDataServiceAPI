@@ -1,19 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
-using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PMCommonEntities.Models.HistoricalData;
-using PMCommonEntities.Models.PseudoXchange;
 using PMMarketDataService.DataProvider.HistoricalDataService.Implementations;
 using PMMarketDataService.DataProvider.Lib.Implementation;
 using PMMarketDataServiceAPI.Models;
-using PMUnifiedAPI.Models;
 using Serilog;
 
 namespace PMMarketDataServiceAPI.Controllers

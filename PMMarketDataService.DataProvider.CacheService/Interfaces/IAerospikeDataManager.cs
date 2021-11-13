@@ -11,5 +11,6 @@ namespace PMMarketDataService.DataProvider.CacheService.Interfaces
         public void SetCachedIndices(double dowPoints, double sp500Points, double nasdaqPoints);
         public DetailedQuoteOutput GetCachedDetailedQuote(string symbol);
         public void SetCachedDetailedQuote(DetailedQuoteOutput detailedQuote);
+        public bool IsConnected();
     }
 }

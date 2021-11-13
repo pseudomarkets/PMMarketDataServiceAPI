@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace PMMarketDataService.DataProvider.Client.Implementation
+﻿namespace PMMarketDataService.DataProvider.Client.Implementation
 {
     public static class EndpointDefinitions
     {

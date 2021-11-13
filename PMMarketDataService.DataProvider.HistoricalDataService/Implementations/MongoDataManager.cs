@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Globalization;
+using System.Linq;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
+using MongoDB.Driver.Core.Servers;
 using PMCommonEntities.Models.HistoricalData;
 using PMMarketDataService.DataProvider.HistoricalDataService.Interfaces;
 using Serilog;
@@ -61,6 +63,27 @@ namespace PMMarketDataService.DataProvider.HistoricalDataService.Implementations
             {
                 Log.Error(e, $"{nameof(SaveHistoricalStockData)}");
             }
+        }
+
+        public bool IsConnected()
+        {
+            bool isConnected = false;
+
+            try
+            {
+                var state = _mongoClient.Cluster.Description.Servers.FirstOrDefault()?.State;
+
+                if (state is ServerState.Connected)
+                {
+                    isConnected = true;
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, $"{nameof(IsConnected)}");
+            }
+
+            return isConnected;
         }
     }
 }
