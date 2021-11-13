@@ -43,7 +43,7 @@ namespace PMMarketDataServiceAPI.Controllers
         [Route("AppendToSymbolsList")]
         public void AppendToSymbolsList([FromHeader] string symbols)
         {
-            var symbolsList = symbols.Split(",").ToList().Select(x => x.ToUpper());
+            var symbolsList = symbols.Split(",").ToList().Select(x => x.ToUpper()).ToList();
 
             _aerospikeConnectionManager.AppendToCacheDisabledSymbolsList(symbolsList);
         }
